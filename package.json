@@ -1,0 +1,30 @@
+{
+  "name": "cars-qaa-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "create-table": "babel-node  src/db/schema/createTable.js",
+    "delete-table": "babel-node  src/db/schema/createTable.js",
+    "start": "nodemon src/app.js --exec babel-node --presets es2015,stage-2",
+    "build": "babel src -d dist --source-maps",
+    "serve": "node dist/app.js",
+    "test": "mocha --compilers js:babel-register \"./src/**/*.test.js\" --recursive "
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "aws-sdk": "^2.9.0",
+    "babel-cli": "^6.22.2",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-stage-0": "^6.22.0",
+    "bluebird": "^3.4.7",
+    "body-parser": "^1.16.0",
+    "chai": "^3.5.0",
+    "hapi": "^16.1.0"
+  },
+  "dependencies": {
+    "express": "^4.14.1",
+    "uuid": "^3.0.1"
+  }
+}

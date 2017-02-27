@@ -1,6 +1,6 @@
-import db from './dynamodb'
+import db from '../db/dynamoDB/dynamodb'
 import uuid from 'uuid'
-import userSchema from './schema/user_schema'
+import userSchema from '../db/dynamoDB/schema/user_schema'
 const client = db(userSchema)
 const Promise = require("bluebird");
 

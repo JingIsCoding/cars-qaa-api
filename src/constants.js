@@ -1,0 +1,7 @@
+export const FLAG_ACCEPT = "ACCEPT";
+export const FLAG_IRRELEVENT = "IRRELEVENT";
+export const FLAG_INVALID = "INVALID";
+export const FLAG_INAPPROPRIATE = "INAPPROPRIATE";
+
+export const STATUS_ACTIVE = "ACTIVE";
+export const STATUS_INACTIVE = "INACTIVE";

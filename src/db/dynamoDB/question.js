@@ -1,15 +1,13 @@
-import db from './dynamodb'
-import uuid from 'uuid'
 import questionSchema from './schema/question_schema'
-const questionDB = db(questionSchema)
-const Promise = require("bluebird");
+import db from './dynamodb'
+const questionDB = db(questionSchema.TableName)
 
-module.exports = {
-    getQuestions: function() {
+export default {
+    getQuestions: function(page, pageSize) {
         return questionDB.scanItem({}).then(questions => questions.Items)
     },
     getAQuestion: function(id) {
-        return questionDB.queryItem({
+        return questionDB.getItem({
             KeyConditionExpression: "#id = :id",
             ExpressionAttributeNames:{
                 "#id": "id"
@@ -17,7 +15,17 @@ module.exports = {
             ExpressionAttributeValues: {
                 ":id": id,
             }
-        }).then(data => data.Items.length > 0 ? data.Items[0] : null)
+        }).then(data => {
+            const question = data.Items.length > 0 ? data.Items[0] : null
+            if (question){
+                question.view = question.view + 1;
+                this.updateQuestion(question)
+            }
+            return question;
+        })
+    },
+    updateQuestion: function(question){
+        questionDB.update(question)
     },
     getQuestionsByUser: function (userId) {
         return questionDB.queryItem({
@@ -46,8 +54,7 @@ module.exports = {
         }).then(data => data.Items)
     },
     getMostRecentQuestions: function(limit, startKey){
-        const limitResult = limit ? limit : 1;
-
+        const limitResult = limit ? limit : 25;
         return questionDB.queryItem({
             IndexName: "createdTime",
             KeyConditionExpression: "#status = :status",
@@ -60,38 +67,15 @@ module.exports = {
                 ":status": "active"
             },
             ScanIndexForward: false
-        }).then(data => data.Items)
+        })
+    },
+    deleteQuestion : function (id) {
+
     },
     getQuestionsWithTags: function(tags){
 
     },
     addQuestion: function(question){
-        if (!question.user){
-            return Promise.reject('Have to specify a user for submitting question')
-        }
-        question.id = uuid.v4();
-        question.userId = question.user.id
-        delete question.user;
-
-        question.views = 0;
-        question.answers = [];
-        question.tags = !!question.tags? question.tags : [];
-        question.status = "active";
-        question.createdTime = new Date().toISOString();
-        question.modifiedTime = new Date().toISOString();
-
-        const friendlyUrl = convertToSlug(question.title);
-        return questionDB.save(Object.assign({}, question, {friendlyUrl}))
-            .then(() => question);
-    },
+        return questionDB.save(question);
+    }
 }
-
-function convertToSlug(title)
-{
-    return title
-        .toLowerCase()
-        .replace(/ /g,'-')
-        .replace(/[^\w-]+/g,'')
-        ;
-}
-

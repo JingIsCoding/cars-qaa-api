@@ -6,10 +6,10 @@
   "scripts": {
     "create-table": "babel-node  src/db/schema/createTable.js",
     "delete-table": "babel-node  src/db/schema/createTable.js",
-    "start": "nodemon src/app.js --exec babel-node --presets es2015,stage-2",
+    "start": "nodemon $NODE_DEBUG_OPTION src/app.js --exec babel-node --presets es2015,stage-2",
     "build": "babel src -d dist --source-maps",
     "serve": "node dist/app.js",
-    "test": "mocha --compilers js:babel-register \"./src/**/*.test.js\" --recursive "
+    "test": "mocha $NODE_DEBUG_OPTION --compilers js:babel-register \"./src/**/*.test.js\" --recursive "
   },
   "author": "",
   "license": "ISC",
@@ -21,10 +21,17 @@
     "bluebird": "^3.4.7",
     "body-parser": "^1.16.0",
     "chai": "^3.5.0",
-    "hapi": "^16.1.0"
+    "hapi": "^16.1.0",
+    "inert": "^4.1.0",
+    "lout": "^9.2.0",
+    "vision": "^4.1.1"
   },
   "dependencies": {
+    "couchbase": "^2.3.0",
     "express": "^4.14.1",
+    "joi": "^10.2.2",
+    "lodash": "^4.17.4",
+    "ottoman": "^1.0.4",
     "uuid": "^3.0.1"
   }
 }

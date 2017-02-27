@@ -1,5 +1,5 @@
 import AWS from "aws-sdk";
-import config from '../../config'
+import config from './config'
 import Promise from 'bluebird'
 
 AWS.config.update({

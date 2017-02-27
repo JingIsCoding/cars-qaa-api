@@ -1,10 +1,11 @@
-const REGIONS = {
-    west_2_region: "us-west-2",
-    east_2_region: "us-east-2"
-}
+'use strict'
 
-export default {
+const COUCHBASE = "COUCHBASE"
+const DYNAMODB = "DYNAMODB"
+
+module.exports = {
+    COUCHBASE,
+    DYNAMODB,
     PORT: 3001,
-    credentials_profile: "cars",
-    region: REGIONS.east_2_region,
+    db: COUCHBASE
 }

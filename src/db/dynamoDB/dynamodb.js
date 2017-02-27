@@ -1,8 +1,8 @@
 import client from './client'
 
-export default function (schema) {
+export default function (tableName) {
     const params = {
-        TableName: schema.TableName
+        TableName: tableName
     };
     return {
         save: (obj) => {

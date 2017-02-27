@@ -1,7 +1,6 @@
-// tests/part1/cart-summary-test.js
 var chai = require('chai');
 var expect = chai.expect; // we are using the "expect" style of Chai
-var question = require('./question');
+import question from './question'
 var promise = require('bluebird');
 
 describe('Questions', function() {
@@ -17,35 +16,30 @@ describe('Questions', function() {
     });
 
     it('should add question', () => {
-        const q = {
-            category: "general",
-            user: {id : "what"},
-            title: "What is happening",
-            content: "why ??? and what yuo want",
-            contentType: "text"
-        }
-        return question.addQuestion(q).then(data => expect(data).to.equal(q));
+        const user = {id : "what"}
+        const tags = ['what', 'is']
+        const title = "What is happening"
+        const content = "why ??? and what yuo want"
+
+        return question.addQuestion(title,content, tags, user ).then(data => expect(data).to.equal(''));
     });
 
-    it.only('should add 20 question', () => {
+    it('should add 3 question', () => {
         const promises = [];
-        for (let i = 1; i < 21 ; i++){
-            const q = {
-                category: "general",
-                user: {id : "what"},
-                title: "1",
-                content: "why ??? and what yuo want",
-                contentType: "text"
-            }
-            q.title = "" + i;
-            promises.push(question.addQuestion(q));
+        for (let i = 0; i < 3 ; i++){
+            const authorId = "user" + i
+            const tags = ['what', 'is']
+            const title = "What is happening this is question " + i;
+            const content = "why ??? and what yuo want" + i
+            promises.push(question.addQuestion(title,content, tags, authorId ).then(data => expect(data).to.equal('')));
         }
 
         return promise.all(promises)
     });
 
     it('should get a question', () => {
-        return question.getAQuestion("9889ca58-ba39-4c5a-8a56-1279ab21bb0b").then(question => expect(question).to.equal(''));
+        return question.getAQuestion("df96ee83-0b15-42cd-bebc-9d5e6cb19a29")
+            .then(question => expect(question).to.equal(''));
     });
 
     it('should get by a user id', () => {
@@ -55,7 +49,6 @@ describe('Questions', function() {
     it("should get questions by time created", () => {
         return question.getMostRecentQuestions()
             .then(questions => {
-                console.log(questions)
                 return questions;
             })
             .then(questions => expect(questions).to.equal(''));

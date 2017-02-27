@@ -1,31 +1,39 @@
-import { getAllQuestions, getAQuestions } from './routes/question'
+import { voteQuestion, likeQuestion, getMostRecentQuestions, getMostPopularQuestions, getQuestionsByKeyword, getQuestionsByTag, postAQuestion, deleteAQuestion, updateAQuestion, getAllQuestions, getAQuestion, getQuestionsByUser } from './routes/question'
+import { postAnAnswer, updateAnAnswer, deleteAnAnswer, voteAnAnswer } from './routes/answer'
 import answer from './routes/answer'
 import config from '../config'
 
 const Hapi = require('hapi');
 
 const server = new Hapi.Server();
-server.connection({ port: 3000, host: 'localhost' });
+server.connection({ port: config.PORT, host: 'localhost' });
 
+//question routes
+server.route(postAQuestion);
+server.route(voteQuestion);
+server.route(likeQuestion);
+server.route(deleteAQuestion);
+server.route(updateAQuestion);
 server.route(getAllQuestions);
-server.route(getAQuestions);
+server.route(getMostRecentQuestions);
+server.route(getMostPopularQuestions);
+server.route(getQuestionsByKeyword);
+server.route(getQuestionsByTag);
+server.route(getAQuestion);
+server.route(getQuestionsByUser);
+
+//answers
+server.route(postAnAnswer);
+server.route(updateAnAnswer);
+server.route(voteAnAnswer);
+server.route(deleteAnAnswer);
+
+server.register([require('vision'), require('inert'), { register: require('lout') }], function(err) {
+});
 
 server.start((err) => {
-
     if (err) {
         throw err;
     }
     console.log(`Server running at: ${server.info.uri}`);
 });
-//
-// // respond with "hello world" when a GET request is made to the homepage
-// app.get('/', (req, res) => res.send("holy").status(200))
-//
-// app.use('/question', question)
-// app.use('/answer', answer)
-//
-// export default () => {
-//     app.listen(config.port, () => {
-//         console.log("Running at port ", config.port)
-//     });
-// };
